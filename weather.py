@@ -15,7 +15,16 @@ def get_current_weather(city = "washim"):
 if __name__ == "__main__":
     print('\n Get Current Weather Conditions\n')
     city = input("\n Enter City: ")
+
+    if not bool (city.strip()):
+        city = "Washim"
+
+
     weather_data = get_current_weather(city)
+
+    if weather_data["cod"] == "404":
+        city = "Washim"
+        weather_data = get_current_weather(city)
 
     print("\n")
     pprint(weather_data)

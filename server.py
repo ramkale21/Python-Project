@@ -12,7 +12,15 @@ def index():
 @app.route('/weather')
 def get_weather():
     city = request.args.get('city')
+
+    if not bool(city.strip()):
+        city = "Washim"
+
     weather_data = get_current_weather(city)
+
+    if weather_data['cod'] == "404":
+        return render_template("not_found.html")
+    
     return render_template(
         "weather.html",
         title = weather_data["name"],
@@ -20,6 +28,10 @@ def get_weather():
         temp=f"{weather_data['main']['temp']:.1f}",
         feels_like=f"{weather_data['main']['feels_like']:.1f}"
     )
+
+@app.route("/not-found")
+def not_found():
+    return render_template('not_found.html')
 
 if __name__ == "__main__":
     print("Starting Weather app")
